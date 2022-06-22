@@ -1,0 +1,14 @@
+[
+  {
+    "action": "Deploy",
+    "metadataType": "CustomLabel",
+    "componentName": "Amount",
+    "path": "DeltaChanges\\force-app\\main\\default\\labels\\CustomLabels.labels-meta.xml"
+  },
+  {
+    "action": "Delete",
+    "metadataType": "CustomLabel",
+    "componentName": "Partner",
+    "path": "destructiveChanges.xml"
+  }
+]

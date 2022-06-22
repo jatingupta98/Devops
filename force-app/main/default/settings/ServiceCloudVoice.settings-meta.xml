@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ServiceCloudVoiceSettings xmlns="http://soap.sforce.com/2006/04/metadata">
+    <enableSCVBYOT>false</enableSCVBYOT>
+    <enableServiceCloudVoice>false</enableServiceCloudVoice>
+    <enableVoiceInGovCloudOptIn>false</enableVoiceInGovCloudOptIn>
+</ServiceCloudVoiceSettings>
