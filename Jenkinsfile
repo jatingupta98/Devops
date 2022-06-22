@@ -2,10 +2,10 @@
 
 node {
 
-    def SF_CONSUMER_KEY=env.SF_CONSUMER_KEY_COMDEV
+   def SF_CONSUMER_KEY=env.SR_CONSUMER_CREDENTIALS_ID_DEV
     def SF_USERNAME=env.SF_USERNAME_COMDEV
     def SERVER_KEY_CREDENTIALS_ID=env.SERVER_KEY_CREDENTIALS_ID_COMDEV
-    def SF_INSTANCE_URL = env.SF_INSTANCE_URL_COMDEV ?: "https://login.salesforce.com"
+    def SF_INSTANCE_URL = env.SF_INSTANCE_URL_DEV ?: "https://login.salesforce.com"
 	def DELTACHANGES = 'deltachanges'
 	def DEPLOYDIR = 'toDeploy'
 	//def APIVERSION = '51.0'
