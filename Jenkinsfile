@@ -2,15 +2,15 @@
 
 node {
 
-   def SF_CONSUMER_KEY=env.SR_CONSUMER_CREDENTIALS_ID_DEV
+    def SF_CONSUMER_KEY=env.SF_CONSUMER_KEY_COMDEV
     def SF_USERNAME=env.SF_USERNAME_COMDEV
     def SERVER_KEY_CREDENTIALS_ID=env.SERVER_KEY_CREDENTIALS_ID_COMDEV
-    def SF_INSTANCE_URL = env.SF_INSTANCE_URL_DEV ?: "https://login.salesforce.com"
+    def SF_INSTANCE_URL = env.SF_INSTANCE_URL_COMDEV ?: "https://login.salesforce.com"
 	def DELTACHANGES = 'deltachanges'
 	def DEPLOYDIR = 'toDeploy'
-	//def APIVERSION = '51.0'
+	def APIVERSION = '51.0'
     def toolbelt = tool 'toolbelt'
-	//def scannerHome = tool 'SonarScanner'
+	def scannerHome = tool 'SonarScanner'
 	
 	//----------------------------------------------------------------------
 	//Check if Previous and Latest commit IDs are provided.
@@ -83,13 +83,64 @@ node {
 		}
 
 
+	stage('Install PowerKit')
+	{
+		bat "echo y | sfdx plugins:install sfpowerkit"
+	}
+
 		stage('Delta changes')
 		{
 			script
-            {			
-				rc = command "${toolbelt}/sfdx sfpowerkit:project:diff --revisionfrom %PreviousCommitId% --revisionto %LatestCommitId% --output ${DELTACHANGES} -x"
+            {
+				rc = command "${toolbelt}/sfdx sfpowerkit:project:diff --revisionfrom %PreviousCommitId% --revisionto %LatestCommitId% --output ${DELTACHANGES} --apiversion ${APIVERSION} -x"
                  
-				if (rc != 0) 
+				def folder = fileExists 'DeltaChanges/force-app'
+				def file = fileExists 'DeltaChanges/destructiveChanges.xml'
+    
+				if( folder && !file )
+				{
+					dir("${WORKSPACE}/${DELTACHANGES}")
+					{
+						println "Force-app folder exist, destructiveChanges.xml doesn't exist"
+						rc = command "${toolbelt}/sfdx force:source:convert -d ../${DEPLOYDIR}"
+					}
+				} 
+				else if ( !folder && file ) 
+				{
+					bat "copy destructive\\package.xml ${DELTACHANGES}"
+					println "Force-app folder doesn't exist, destructiveChanges.xml exist" 
+				}
+				else if ( folder && file ) 
+				{
+					dir("${WORKSPACE}/${DELTACHANGES}")
+					{
+						println "Force-app folder exist, destructiveChanges.xml exist"
+						if (Deployment_Type=='Deploy Only')
+						{
+							println "You selected deploy only so deleting destructivechanges.xml to avoid component deletion."
+							bat "del /f destructiveChanges.xml"
+							rc = command "${toolbelt}/sfdx force:source:convert -d ../${DEPLOYDIR}"
+						}
+						else if (Deployment_Type=='Delete and Deploy')
+						{
+							println "Both deletion and deployment will be performed."
+							rc = command "${toolbelt}/sfdx force:source:convert -d ../${DEPLOYDIR}"
+							bat "copy destructiveChanges.xml ..\\${DEPLOYDIR}"
+						}
+						else if (Deployment_Type=='Delete Only')
+						{
+							println "You selected Delete only but force-app folder also exist. So deleting the force-app folder to avoid deployment."
+							bat "echo y | rmdir /s force-app"
+							bat "copy ..\\destructive\\package.xml ."
+						}
+						else if (Deployment_Type=='Validate Only')
+                        {
+                            println "You selected Validate Only, so only validation will be performed."
+                            rc = command "${toolbelt}/sfdx force:source:convert -d ../${DEPLOYDIR}"
+                        }
+					}
+				}
+				else 
 				{
 					println "There is nothing to be deployed or deleted."
 				}
@@ -237,4 +288,3 @@ def command(script) {
 		return bat(returnStatus: true, script: script);
     }
 }
-
