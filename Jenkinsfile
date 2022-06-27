@@ -170,8 +170,8 @@ node {
 					else if (TESTLEVEL=='RunSpecifiedTests')
 					{
 						println TESTLEVEL
-						def Testclass = SpecifyTestClass.replaceAll('\\s','')
-						println Testclass
+						//def Testclass = SpecifyTestClass.replaceAll('\\s','')
+						//println Testclass
 						rc = command "${toolbelt}/sfdx force:mdapi:deploy -d ${DEPLOYDIR} --checkonly --wait 10 --targetusername ${SF_USERNAME} --testlevel ${TESTLEVEL} -r ${Testclass}"
 					}
    
@@ -208,8 +208,8 @@ node {
 					else if (TESTLEVEL=='RunSpecifiedTests') 
 					{
 						println TESTLEVEL
-						def Testclass = SpecifyTestClass.replaceAll('\\s','')
-						println Testclass						
+						//def Testclass = SpecifyTestClass.replaceAll('\\s','')
+						//println Testclass						
 						rc = command "${toolbelt}/sfdx force:mdapi:deploy -d ${DEPLOYDIR} --wait 10 --targetusername ${SF_USERNAME} --testlevel ${TESTLEVEL} -r ${Testclass}"
 					}
 					else
@@ -250,8 +250,8 @@ node {
 					else if (TESTLEVEL=='RunSpecifiedTests') 
 					{
 						println TESTLEVEL
-						def Testclass = SpecifyTestClass.replaceAll('\\s','')
-						println Testclass						
+						//def Testclass = SpecifyTestClass.replaceAll('\\s','')
+						//println Testclass						
 						rc = command "${toolbelt}/sfdx force:mdapi:deploy -d ${DEPLOYDIR} --wait 10 --targetusername ${SF_USERNAME} --testlevel ${TESTLEVEL} -r ${Testclass} --verbose --loglevel fatal"
 					}
 					else  
