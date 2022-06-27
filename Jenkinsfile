@@ -92,7 +92,7 @@ node {
 		{
 			script
             {
-				rc = command "${toolbelt}/sfdx sfpowerkit:project:diff --revisionfrom %PreviousCommitId% --revisionto %LatestCommitId% --output ${DELTACHANGES} --apiversion ${APIVERSION} -x"
+				rc = command "${toolbelt}/sfdx sfpowerkit:project:diff --revisionfrom %PreviousCommitId% --revisionto %LatestCommitId% --output ${DELTACHANGES} -x"
                  
 // 				def folder = fileExists 'DeltaChanges/force-app'
 // 				def file = fileExists 'DeltaChanges/destructiveChanges.xml'
@@ -165,14 +165,14 @@ node {
 					else if (TESTLEVEL=='RunLocalTests') 
 					{
 						println TESTLEVEL
-						rc = command "${toolbelt}/sfdx force:mdapi:deploy -d ${DEPLOYDIR} --checkonly --wait 10 --targetusername ${SF_USERNAME} --testlevel ${TESTLEVEL} --verbose --loglevel fatal"
+						rc = command "${toolbelt}/sfdx force:mdapi:deploy -d ${DEPLOYDIR} --checkonly --wait 10 --targetusername ${SF_USERNAME} --testlevel ${TESTLEVEL}"
 					}
 					else if (TESTLEVEL=='RunSpecifiedTests')
 					{
 						println TESTLEVEL
 						def Testclass = SpecifyTestClass.replaceAll('\\s','')
 						println Testclass
-						rc = command "${toolbelt}/sfdx force:mdapi:deploy -d ${DEPLOYDIR} --checkonly --wait 10 --targetusername ${SF_USERNAME} --testlevel ${TESTLEVEL} -r ${Testclass} --verbose --loglevel fatal"
+						rc = command "${toolbelt}/sfdx force:mdapi:deploy -d ${DEPLOYDIR} --checkonly --wait 10 --targetusername ${SF_USERNAME} --testlevel ${TESTLEVEL} -r ${Testclass}"
 					}
    
 					else 
@@ -203,14 +203,14 @@ node {
 					else if (TESTLEVEL=='RunLocalTests') 
 					{
 						println TESTLEVEL
-						rc = command "${toolbelt}/sfdx force:mdapi:deploy -d ${DEPLOYDIR} --wait 10 --targetusername ${SF_USERNAME} --testlevel ${TESTLEVEL} --verbose --loglevel fatal"
+						rc = command "${toolbelt}/sfdx force:mdapi:deploy -d ${DEPLOYDIR} --wait 10 --targetusername ${SF_USERNAME} --testlevel ${TESTLEVEL}"
 					}
 					else if (TESTLEVEL=='RunSpecifiedTests') 
 					{
 						println TESTLEVEL
 						def Testclass = SpecifyTestClass.replaceAll('\\s','')
 						println Testclass						
-						rc = command "${toolbelt}/sfdx force:mdapi:deploy -d ${DEPLOYDIR} --wait 10 --targetusername ${SF_USERNAME} --testlevel ${TESTLEVEL} -r ${Testclass} --verbose --loglevel fatal"
+						rc = command "${toolbelt}/sfdx force:mdapi:deploy -d ${DEPLOYDIR} --wait 10 --targetusername ${SF_USERNAME} --testlevel ${TESTLEVEL} -r ${Testclass}"
 					}
 					else
 					{
@@ -245,7 +245,7 @@ node {
 					else if (TESTLEVEL=='RunLocalTests') 
 					{
 						println TESTLEVEL
-						rc = command "${toolbelt}/sfdx force:mdapi:deploy -d ${DEPLOYDIR} --wait 10 --targetusername ${SF_USERNAME} --testlevel ${TESTLEVEL} --verbose --loglevel fatal"
+						rc = command "${toolbelt}/sfdx force:mdapi:deploy -d ${DEPLOYDIR} --wait 10 --targetusername ${SF_USERNAME} --testlevel ${TESTLEVEL}"
 					}
 					else if (TESTLEVEL=='RunSpecifiedTests') 
 					{
